@@ -1,0 +1,48 @@
+services:
+  web:
+    build: ./web/
+    container_name: xfdev
+    networks:
+      - bridgenet
+    links:
+      - "db"
+    depends_on:
+      - db
+    volumes:
+      - xfweb-data:/var/www/html
+      - ./web/config.php:/var/www/html/src/config.php
+      - ./addons/:/var/www/html/src/addons/Inforge/
+      - ./web/docker-files/localhost.crt:/etc/ssl/certs/ssl-cert-snakeoil.pem
+      - ./web/docker-files/localhost.key:/etc/ssl/private/ssl-cert-snakeoil.key
+    ports:
+      - "80:80"
+      - "443:443"
+  db:
+    image: mysql:latest
+    container_name: xfdb
+    networks:
+      - bridgenet
+    ports:
+      - "3306:3306"
+    volumes:
+      - xfdb-data:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=xf2
+      - MYSQL_USER=xenforo
+      - MYSQL_PASSWORD=xfdev
+
+
+volumes:
+  xfweb-data: {}
+  xfdb-data: {}
+
+
+networks:
+  bridgenet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.24.0.0/16
+          gateway: 172.24.0.1
