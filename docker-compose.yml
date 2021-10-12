@@ -1,6 +1,10 @@
 services:
   web:
-    build: ./web/
+    build:
+      context: ./web
+      args:
+        - LOCAL_USER_ID=1000
+        - LOCAL_GROUP_ID=1000
     container_name: xfdev
     networks:
       - bridgenet
@@ -9,15 +13,15 @@ services:
     depends_on:
       - db
     volumes:
-      - xfweb-data:/var/www/html
+      - ./web/xenforo/:/var/www/html/
       - ./web/config.php:/var/www/html/src/config.php
-      - ./addons/:/var/www/html/src/addons/Inforge/
-      - ./adp-addons/:/var/www/html/src/addons/AlessioDP/
-      - ./web/docker-files/localhost.crt:/etc/ssl/certs/ssl-cert-snakeoil.pem
-      - ./web/docker-files/localhost.key:/etc/ssl/private/ssl-cert-snakeoil.key
     ports:
       - "80:80"
       - "443:443"
+    user: xenforo:xenforo
+    environment:
+      - APACHE_RUN_USER=xenforo
+      - APACHE_RUN_GROUP=xenforo
   db:
     image: mysql:latest
     container_name: xfdb
@@ -35,7 +39,6 @@ services:
 
 
 volumes:
-  xfweb-data: {}
   xfdb-data: {}
 
 
