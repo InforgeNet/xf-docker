@@ -25,3 +25,5 @@ $config['enableMail'] = false;
 //$config['cookie']['prefix'] = 'prefix_';
 
 $config['chmodWritableValue'] = 0666;
+
+//$config['development']['closureCompilerPath'] = \XF::getRootDirectory() . '/development/closure-compiler.jar';

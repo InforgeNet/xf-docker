@@ -28,3 +28,7 @@ COPY ./docker-files/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-p
 
 COPY --chown=www-data:www-data ./upload/ /var/www/html/
 
+RUN mkdir -p /usr/share/man/man1 && apt-get install -y openjdk-11-jdk
+
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
+RUN export JAVA_HOME

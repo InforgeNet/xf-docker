@@ -12,6 +12,7 @@ services:
       - xfweb-data:/var/www/html
       - ./web/config.php:/var/www/html/src/config.php
       - ./addons/:/var/www/html/src/addons/Inforge/
+      - ./adp-addons/:/var/www/html/src/addons/AlessioDP/
       - ./web/docker-files/localhost.crt:/etc/ssl/certs/ssl-cert-snakeoil.pem
       - ./web/docker-files/localhost.key:/etc/ssl/private/ssl-cert-snakeoil.key
     ports:

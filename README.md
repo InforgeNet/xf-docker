@@ -11,16 +11,25 @@ and [Docker Compose](https://docs.docker.com/compose/install/)
 the [web](web) folder
 3. Move to the [web/docker-files](web/docker-files) directory
 4. Create root CA key: `openssl genrsa -des3 -out rootCA.key 4096`
-5. Create root certificate: `openssl req -new -key localhost.key -out localhost.csr`
-6. Create localhost certificate:
+5. Create root certificate:
 ```
-openssl x509 -req -in localhost.csr -CAkey rootCA.key -CAcreateserial \
--out localhost.crt -days 500 -sha256
+openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 \
+-out rootCA.crt
 ```
-7. Add rootCA.crt as a trusted authority in your browser/system
-8. Build services: `docker-compose build` for the repository root directory
-9. Run services: `docker-compose up -d`
-10. Install XenForo: `./cmd.sh xf:install`
+6. Create root private key: `openssl genrsa -out localhost.key 2048`
+7. Create certificate signing request (Common Name MUST be set to "localhost"):
+```
+openssl req -new -key localhost.key -out localhost.csr
+```
+8. Create localhost certificate:
+```
+openssl x509 -req -in localhost.csr -CA rootCA.crt -CAkey rootCA.key \
+-CAcreateserial -out localhost.crt -days 500 -sha256
+```
+9. Add rootCA.crt as a trusted authority in your browser/system
+10. Build services: `docker-compose build` for the repository root directory
+11. Run services: `docker-compose up -d`
+12. Install XenForo: `./cmd.sh xf:install`
 
 Try to visit [https://localhost](https://localhost)
 
