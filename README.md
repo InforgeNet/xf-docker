@@ -60,3 +60,16 @@ Addons can be found inside the `web/xenforo/src/addons` directory. You can
 symlink the directory in a more convenient location.
 
 Install the addon: `./cmd.sh xf:addon-install Your/AddOnId`
+
+## Vim Vdebug
+
+If using vim wih vdebug, configure the plugin as follow:
+```
+let g:vdebug_options={}
+let g:vdebug_options.ide_key = 'XDEBUG_VIM'
+let g:vdebug_options.path_maps = {
+	\ "/var/www/html": resolve(expand("~/path/to/xenforo/root"))
+\ }
+let g:vdebug_options["port"] = 9003
+```
+The path to the xenforo root directory (`web/xenforo/`) can also be a symlink.
