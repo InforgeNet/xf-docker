@@ -54,6 +54,9 @@ Try to visit [https://localhost](https://localhost)
 
 Configuration for XenForo is available in [web/config.php](web/config.php).
 
+From now on, you just need `docker-compose down` to stop the containers and
+`docker-compose up -d` to start them.
+
 ## Add your addons
 
 Addons can be found inside the `web/xenforo/src/addons` directory. You can
