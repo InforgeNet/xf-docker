@@ -4,7 +4,7 @@ RUN mkdir -p /usr/share/man/man1 \
 	&& apt-get update \
 	&& apt-get install -y unzip libicu-dev locales libfreetype6-dev \
 	libjpeg62-turbo-dev libpng-dev zlib1g-dev libbz2-dev libmagickwand-dev \
-	libzip-dev ghostscript wget gnupg2 \
+	libzip-dev ghostscript wget gnupg2 libgmp-dev \
 	&& sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
 	&& sed -i -e 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' /etc/locale.gen \
 	&& echo 'LANG="en_US.UTF-8"' > /etc/default/locale \
@@ -17,9 +17,11 @@ RUN mkdir -p /usr/share/man/man1 \
 	&& docker-php-ext-install bz2 \
 	&& docker-php-ext-install bcmath \
 	&& docker-php-ext-install zip \
+	&& docker-php-ext-install gmp \
 	&& mkdir -p /usr/src/php/ext/imagick \
 	&& curl -fsSL https://github.com/Imagick/imagick/archive/06116aa24b76edaf6b1693198f79e6c295eda8a9.tar.gz | tar xvz -C "/usr/src/php/ext/imagick" --strip 1 \
 	&& docker-php-ext-install imagick \
+	&& docker-php-ext-install exif \
 	&& pecl install xdebug && docker-php-ext-enable xdebug \
 	&& a2enmod rewrite && a2enmod ssl && a2ensite default-ssl \
 	&& wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add - \
@@ -39,7 +41,7 @@ RUN groupadd --gid ${LOCAL_USER_ID} --non-unique xenforo \
 
 USER xenforo:xenforo
 
-COPY --chown=xenforo:xenforo ./docker-files/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY --chown=xenforo:xenforo ./docker-files/docker-php-ext-*.ini /usr/local/etc/php/conf.d/
 COPY --chown=xenforo:xenforo ./docker-files/localhost.crt /etc/ssl/certs/ssl-cert-snakeoil.pem
 COPY --chown=xenforo:xenforo ./docker-files/localhost.key /etc/ssl/private/ssl-cert-snakeoil.key
 
