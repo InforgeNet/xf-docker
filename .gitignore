@@ -1,1 +1,7 @@
-addons
+*
+!.gitignore
+!README.md
+!LICENSE
+!docker-compose.yml
+!cmd.sh
+!web/
